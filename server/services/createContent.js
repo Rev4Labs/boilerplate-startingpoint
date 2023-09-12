@@ -60,7 +60,7 @@ function constructPromptListWithCounts(details, djTopics) {
       frequency: 0,
     },
     type3: {
-      prompt: `${djStyle} ${djCoreInstructions} ${brevity[0]}`,
+      prompt: `${djStyle} ${djCoreInstructions} Refer to ${details.name} as though they are your only listener. ${brevity[0]}`,
       frequency: 5,
     },
   };
@@ -72,7 +72,8 @@ function songPrompts(
   songName,
   bandName,
   date,
-  timeSlot
+  timeSlot,
+  name
 ) {
   //TODO: Make another list that is dynamic basic on a websearch for todays headllines
 
@@ -138,6 +139,7 @@ function songPrompts(
     bandName,
     date,
     timeSlot,
+    name,
   };
 
   function createPromptsArray(promptListWithCounts) {
@@ -167,6 +169,7 @@ async function createContent(
   bandName,
   date,
   timeSlot,
+  name,
   weather
 ) {
   try {
@@ -184,7 +187,8 @@ async function createContent(
           songName,
           bandName,
           date,
-          timeSlot
+          timeSlot,
+          name
         ),
       });
     }

@@ -1,7 +1,8 @@
 const getLatLonFromZip = require("./locationIQ");
 
-// Example usage:
-(async function () {
-  const coordinates = await getLatLonFromZip("80816");
-  console.log(coordinates);
-})();
+async function getLatLong(zip) {
+  const coordinates = await getLatLonFromZip(zip);
+  return coordinates;
+}
+
+module.exports = { getLatLong };

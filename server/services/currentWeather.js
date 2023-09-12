@@ -3,10 +3,10 @@ const axios = require("axios");
 const OPEN_WEATHER_API_KEY = process.env.OPEN_WEATHER_API_KEY;
 
 const BASE_URL = "https://api.openweathermap.org/data/3.0/onecall/timemachine";
-
+const Profile = require("../db/Profile");
 // latitude: '38.86003596296296', longitude: '-105.27348095555556' }
 
-async function currenWeather() {
+async function currentWeather(lat, long) {
   function toImperialAndLocalTime(data) {
     function kelvinToFahrenheit(K) {
       return ((K - 273.15) * 9) / 5 + 32;
@@ -118,13 +118,9 @@ async function currenWeather() {
 
     return `
   As of ${dt} today, the weather is ${detailedDescription}. 
-  The temperature is currently ${Math.round(
-    temp
-  )} degrees.
+  The temperature is currently ${Math.round(temp)} degrees.
   The sun rose at ${sunrise} and will set at ${sunset}.
-  Humidity stands at ${Math.round(
-    humidity
-  )} percent.
+  Humidity stands at ${Math.round(humidity)} percent.
   The sky is ${clouds} percent cloudy, with a visibility of approximately ${Math.round(
       visibility
     )} miles.
@@ -150,7 +146,7 @@ async function currenWeather() {
     console.log("Failed to fetch weather data.");
   }
 }
-module.exports = currenWeather;
+module.exports = currentWeather;
 // {
 //   lat: 38.86,
 //   lon: -105.2735,

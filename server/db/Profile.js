@@ -10,6 +10,10 @@ const Profile = conn.define("profile", {
     },
     allowNull: false,
   },
+  name: {
+    type: STRING,
+    allowNull: true,
+  },
   zip: {
     type: INTEGER,
     allowNull: true,

@@ -18,8 +18,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //sets session flag to true to indicate first load of app. This will be set to false after first song.
-const sessionFlag = require("./services/utl/globalVariableModule");
-sessionFlag.set(true);
 
 app.use(express.static(path.join(__dirname, "..", "public")));
 

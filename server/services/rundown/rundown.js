@@ -144,7 +144,7 @@ async function reset(userEmail) {
 
 let currentRundownIndex = 0;
 
-async function addPlaylistToRundown(userEmail, jamSessionId) {
+async function addPlaylistToRundown(userEmail, jamSessionId, profile) {
   userEmail = userEmail;
   console.log(jamSessionId);
   if (sessionFlag.get()) {
@@ -190,7 +190,7 @@ async function addPlaylistToRundown(userEmail, jamSessionId) {
   let tempSongName;
   let tempBandName;
 
-  let content = await getContent(show, userEmail);
+  let content = await getContent(show, userEmail, profile);
   if (show.rundown[currentRundownIndex + 1].type !== "song") {
     tempSongName = show.rundown[currentRundownIndex + 2].songName;
     tempBandName = show.rundown[currentRundownIndex + 2].bandName;
@@ -223,7 +223,7 @@ async function addPlaylistToRundown(userEmail, jamSessionId) {
   return content.audioURI;
 }
 
-async function getContent(showWithSongs, userEmail) {
+async function getContent(showWithSongs, userEmail, profile) {
   currentRundownIndex = await getCurrentRundownIndex(userEmail);
 
   if (showWithSongs.rundown[currentRundownIndex + 1].type === "end") {
@@ -240,7 +240,7 @@ async function getContent(showWithSongs, userEmail) {
 
   async function weatherSong(songAfterWeather) {
     await updateCurrentRundownIndex(userEmail, currentRundownIndex + 2);
-    let weatherReport = await currentWeather();
+    let weatherReport = await currentWeather(profile.lat, profile.long);
     let content = await createContent(
       null,
       null,
@@ -248,6 +248,7 @@ async function getContent(showWithSongs, userEmail) {
       null,
       null,
       null,
+      profile.name,
       `Summarize this weather, be brief. Weather: ${weatherReport}. End the weather report by announcing this song by ${songAfterWeather.bandName} called ${songAfterWeather.songName}. Be very brief.`
     );
     let audioURI = await convertMP3FileToDataURI(content.fileName);
@@ -262,7 +263,8 @@ async function getContent(showWithSongs, userEmail) {
       nextElement.songName,
       nextElement.bandName,
       showWithSongs.date,
-      showWithSongs.timeSlot
+      showWithSongs.timeSlot,
+      profile.name
     );
     let audioURI = await convertMP3FileToDataURI(content.fileName);
     return { audioURI, transcript: content.text };

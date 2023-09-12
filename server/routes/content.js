@@ -1,13 +1,21 @@
 const router = require("express").Router();
 const Tracks = require("../db/Tracks");
+const Profile = require("../db/Profile");
 const JamSession = require("../db/JamSession");
+const { getLatLong } = require("../services/getLatLong");
 
 const { reset, addPlaylistToRundown } = require("../services/rundown/rundown");
-
+const sessionFlag = require("../services/utl/globalVariableModule");
 
 router.post("/next-content", async (req, res) => {
   const userEmail = req.session.email;
   const { curTrack, nextTrack, jamSessionId } = req.body;
+
+  const profile = await Profile.findOne({
+    where: {
+      userEmail: userEmail,
+    },
+  });
 
   let jamSession;
 
@@ -18,6 +26,7 @@ router.post("/next-content", async (req, res) => {
         userEmail: userEmail,
       },
     });
+    sessionFlag.set(false);
   }
 
   if (!jamSession) {
@@ -25,6 +34,20 @@ router.post("/next-content", async (req, res) => {
       userEmail: userEmail,
       jamSessionId: jamSessionId,
     });
+    let { latitude, longitude } = await getLatLong(profile.zip);
+
+    await Profile.update(
+      {
+        lat: latitude,
+        long: longitude,
+      },
+      {
+        where: {
+          userEmail: userEmail,
+        },
+      }
+    );
+    sessionFlag.set(true);
   }
 
   await Tracks.upsert({
@@ -33,7 +56,7 @@ router.post("/next-content", async (req, res) => {
     nextTrack: nextTrack,
   });
 
-  const content = await addPlaylistToRundown(userEmail, jamSessionId);
+  const content = await addPlaylistToRundown(userEmail, jamSessionId, profile);
   res.json(content);
 });
 
