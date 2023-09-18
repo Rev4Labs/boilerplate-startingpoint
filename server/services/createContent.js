@@ -8,9 +8,9 @@ const {
   MessagesPlaceholder,
 } = require("langchain/prompts");
 const { BufferMemory } = require("langchain/memory");
-const { saveDebugTrackerToFile } = require("./utl/debugTracker");
-const { songPrompts } = require("./utl/promptConstructor");
+const { songPrompts, talkShowPrompts } = require("./utl/promptConstructor");
 const { djCharacters } = require("./djCharacters");
+const currentWeather = require("../services/currentWeather");
 
 async function createContent(
   radioStation,
@@ -22,7 +22,8 @@ async function createContent(
   name,
   djId,
   station,
-  weather
+  type,
+  songAfterWeather
 ) {
   try {
     const { details } = await djCharacters(djId);
@@ -46,6 +47,25 @@ async function createContent(
       memoryKey: "history",
     });
 
+    //////////////////////////////////////////////////////////////////////////////
+    const chatPromptTalkShow = ChatPromptTemplate.fromPromptMessages([
+      SystemMessagePromptTemplate.fromTemplate(template),
+      new MessagesPlaceholder("history"),
+      HumanMessagePromptTemplate.fromTemplate("{input}"),
+    ]);
+    const memoryTalkShow = new BufferMemory({
+      returnMessages: true,
+      memoryKey: "history",
+    });
+
+    const talkShowChain = new ConversationChain({
+      memory: memoryTalkShow,
+      prompt: chatPromptTalkShow,
+      llm: chat,
+      verbose: true,
+    });
+
+    ///////////////////////////////////////////////////////////////////////////////
     const chain = new ConversationChain({
       memory: memory,
       prompt: chatPrompt,
@@ -59,12 +79,14 @@ async function createContent(
 
     debugTracker.push({ memory: await memory.chatHistory.getMessages() });
     let result;
-    if (weather) {
+    let weatherReport = await currentWeather();
+    if (type === "weather") {
       result = await chain.call({
-        input: weather,
+        input: `Summarize this weather, be brief. Weather: ${weatherReport}. End the weather report by announcing this song by ${songAfterWeather.bandName} called ${songAfterWeather.songName}. Be very brief.`,
       });
-    } else {
-      let input = await songPrompts(
+    } else if (type === "talkShow") {
+      //TODO: NEEDS TO TAKE IN SOME DATA STRUCTURE OF THE DIALOGUE AND SEPERATE THE VOICE AUDIO CREATION BY SEGMENT AND SPEAKER. ALSO NEEDS TO RETURN ONE AUDIO THAT COMBINES THE ALTERNATING DIAGLOGUE.
+      let input = await talkShowPrompts(
         radioStation,
         showName,
         songName,
@@ -78,11 +100,28 @@ async function createContent(
       result = await chain.call({
         input: input,
       });
+    } else {
+      let input = await songPrompts(
+        radioStation,
+        showName,
+        songName,
+        bandName,
+        date,
+        timeSlot,
+        name,
+        djId,
+        station
+      );
+      result = await talkShowChain.call({
+        input: input,
+      });
+      console.log(result);
     }
 
-    saveDebugTrackerToFile(debugTracker);
+    //TODO: The result will need to call fetchSpeech for each array item for two voice IDs. The the results will need to be merged into a single audio file. Would there be a way to overlap the audio as though it was a real conversaion?
+
     const timestamp = Date.now();
-//TODO: maybe clean up the response taking out special characters before sending to the API
+
     const response = await fetchSpeech(
       voiceID,
       result.response,

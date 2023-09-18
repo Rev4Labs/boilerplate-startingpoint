@@ -1,7 +1,7 @@
 function createDefaultShow() {
   return {
     radioStation: "WYOU",
-    showName:'Default Show',
+    showName: "Default Show",
     date: "2023-09-01",
     timeSlot: "7:00 AM - 8:00 AM",
     rundown: [
@@ -13,7 +13,7 @@ function createDefaultShow() {
         duration: null,
       },
       {
-        type: "song",
+        type: "talkShow",
         songName: null,
         bandName: null,
         albumName: null,

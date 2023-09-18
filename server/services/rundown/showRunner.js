@@ -6,7 +6,7 @@ const {
   updateCurrentRundownIndex,
 } = require("./rundownUtlities/rundownIndex");
 const { saveToDb, reset } = require("../rundown/rundownUtlities/dbUtilities");
-const currentWeather = require("../currentWeather");
+
 const { convertFileToDataURI } = require("../utl/convertMP3FileToDataURI");
 const { createContent } = require("../createContent");
 
@@ -36,7 +36,8 @@ async function showRunner(
       show.timeSlot,
       display_name,
       djId,
-      station
+      station,
+      show.rundown[currentRundownIndex + 1].type
     );
 
     let audioURI = await convertFileToDataURI(content.fileName, "mp3");
@@ -58,7 +59,6 @@ async function showRunner(
 
     await updateCurrentRundownIndex(userEmail, currentRundownIndex + 2);
 
-    let weatherReport = await currentWeather();
     content = await createContent(
       null,
       null,
@@ -69,7 +69,41 @@ async function showRunner(
       display_name,
       djId,
       station,
-      `Summarize this weather, be brief. Weather: ${weatherReport}. End the weather report by announcing this song by ${songAfterWeather.bandName} called ${songAfterWeather.songName}. Be very brief.`
+      show.rundown[currentRundownIndex + 1].type,
+      songAfterWeather
+    );
+
+    let audioURI = await convertFileToDataURI(content.fileName, "mp3");
+
+    await saveToDb(
+      jamSessionId,
+      currentRundownIndex + 2,
+      nextTrackURI,
+      tempSongName,
+      tempBandName,
+      content.audioURI,
+      content.transcript
+    );
+
+    return audioURI;
+  } else if (show.rundown[currentRundownIndex + 1].type === "talkShow") {
+    let songAfterTalkShow = show.rundown[currentRundownIndex + 2];
+
+    await updateCurrentRundownIndex(userEmail, currentRundownIndex + 2);
+
+    // let talkShow = await currentWeather();
+    content = await createContent(
+      show.radioStation,
+      show.showName,
+      null,
+      null,
+      show.date,
+      show.timeSlot,
+      display_name,
+      djId,
+      station,
+      show.rundown[currentRundownIndex + 1].type,
+      songAfterTalkShow
     );
 
     let audioURI = await convertFileToDataURI(content.fileName, "mp3");
