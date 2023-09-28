@@ -163,7 +163,7 @@ export class Radio extends Component {
 
       let dataUri
       //uncomment following line when ready to test with backend
-      //dataUri = await axios.post("/api/content/next-content", payload);
+      dataUri = await axios.post('/api/content/next-content', payload)
 
       const metadataLoadedPromise = new Promise((resolve) => {
         this.audio.addEventListener('loadedmetadata', () => {
@@ -346,7 +346,7 @@ export class Radio extends Component {
 
   async playContext(context) {
     this.spotifyApi.setAccessToken(this.props.accessToken)
-    this.spotifyApi.setShuffle(true)
+    this.spotifyApi.setShuffle(false)
     clearTimeout(this.djAudioTimeout)
     clearTimeout(this.delayNextTrackTimeout)
     this.delayNextTrack = false
@@ -429,7 +429,7 @@ export class Radio extends Component {
             </Link>
           </Col>
         </Row>
-        <Row className="order-row order-row-2 justify-content-center player-container">
+        <Row className="order-row order-row-2 justify-content-center player-container mb-5">
           <Col className="radio-panel-container" xs={12}>
             <Row className="radio-panel">
               <Routes>
@@ -537,7 +537,7 @@ export class Radio extends Component {
         {/* {(this.state.djOnAir = true)} */}
         {this.state.djOnAir && (
           <Row
-            className="order-row order-row-4 justify-content-center align-items-center blink"
+            className="order-row order-row-4 justify-content-center align-items-center blink mt-5"
             style={{ paddingTop: '10px' }}
           >
             <Col>

@@ -91,7 +91,8 @@ async function showRunner(userEmail, jamSessionId, user, djId, station, chain) {
     await updateCurrentRundownIndex(userEmail, currentRundownIndex + 2)
 
     let history = await historySegment(
-      display_name,
+      // display_name,
+      user.profile.name,
       songAfterHistory.songName,
       songAfterHistory.bandName
     )

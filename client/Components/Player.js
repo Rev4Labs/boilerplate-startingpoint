@@ -26,12 +26,12 @@ const Player = (props) => {
     return () => {
       window.removeEventListener('resize', updateImageHeight)
     }
-  }, [])
+  }, [props.track?.image])
 
   return (
     <Col>
       <Row className="text-light title">
-        <h1 className="h3 mt-3">Now Playing</h1>
+        <h1 className="h3 mt-3 mb-3">Now Playing</h1>
       </Row>
       <Row
         className="g-5 bg-dark text-light"
@@ -70,7 +70,7 @@ const Player = (props) => {
         </Col>
         <Col sm={12} md={6} className="px-5 d-flex align-items-center">
           <div style={{ textAlign: 'center' }}>
-            <div>
+            {/* <div>
               <Image
                 ref={image2Ref}
                 src={props.track?.image}
@@ -80,7 +80,21 @@ const Player = (props) => {
                   width: '100%',
                   objectFit: 'contain',
                 }}
-              />
+              /> */}
+            <div
+              ref={image2Ref}
+              style={{
+                // maxHeight: '500px',
+                maxWidth: '100%',
+                width: '100%',
+                objectFit: 'contain',
+                backgroundImage: `url(${props.track?.image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: '50% 50%',
+                aspectRatio: '1 / 1',
+              }}
+            >
+              {/* <Image src={props.track?.image} /> */}
             </div>
             <div>
               <h4 className="h5 mt-2 mb-0">{props.track?.name}</h4>

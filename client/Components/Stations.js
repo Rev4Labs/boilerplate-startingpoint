@@ -41,7 +41,7 @@ export function Stations(props) {
   return (
     <Col className="text-center">
       <Row className="text-light title2 justify-content-center">
-        <h1 className="h3 mt-3">Select Your Music</h1>
+        <h1 className="h3 mt-3 mb-3">Select Your Music</h1>
       </Row>
       <Row>
         <Col

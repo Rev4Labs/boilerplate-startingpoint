@@ -89,7 +89,7 @@ export function DiscJockeys(props) {
   return (
     <Col>
       <Row className="text-light title">
-        <h1 className="h3 mt-3">Select Your Disc Jockey</h1>
+        <h1 className="h3 mt-3 mb-3">Select Your Disc Jockey</h1>
       </Row>
       <Row>
         <Col
