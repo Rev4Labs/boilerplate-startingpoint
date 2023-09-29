@@ -429,39 +429,38 @@ export class Radio extends Component {
             </Link>
           </Col>
         </Row>
-        <Row className="order-row order-row-2 justify-content-center player-container">
-          <Col className="radio-panel-container" xs={12}>
-            <Row className="radio-panel">
-              <Routes>
-                <Route
-                  index
-                  element={
-                    <Stations
-                      playContext={this.playContext}
-                      pauseSpotify={() => this.player?.player?.pause()}
-                    />
-                  }
+        <Row
+          className="order-row order-row-2 justify-content-center player-container"
+          xs={12}
+        >
+          <Routes>
+            <Route
+              index
+              element={
+                <Stations
+                  playContext={this.playContext}
+                  pauseSpotify={() => this.player?.player?.pause()}
                 />
-                <Route
-                  path="stations"
-                  element={
-                    <Stations
-                      playContext={this.playContext}
-                      pauseSpotify={() => this.player?.player?.pause()}
-                    />
-                  }
+              }
+            />
+            <Route
+              path="stations"
+              element={
+                <Stations
+                  playContext={this.playContext}
+                  pauseSpotify={() => this.player?.player?.pause()}
                 />
-                <Route
-                  path="djs"
-                  element={<DiscJockeys selectDj={this.selectDj} />}
-                />
-                <Route
-                  path="player"
-                  element={<Player playContext={this.playContext} />}
-                />
-              </Routes>
-            </Row>
-          </Col>
+              }
+            />
+            <Route
+              path="djs"
+              element={<DiscJockeys selectDj={this.selectDj} />}
+            />
+            <Route
+              path="player"
+              element={<Player playContext={this.playContext} />}
+            />
+          </Routes>
         </Row>
         <Row
           className={`order-row order-row-3 justify-content-center align-items-center align-items-top ${
@@ -547,47 +546,46 @@ export class Radio extends Component {
         )}
         <Row className="order-row order-row-5 justify-content-center">
           <Col xs={12} className={this.state.showDevTools ? '' : 'd-none'}>
-            <Container className="text-center mt-5">
-              <Button className="m-1" onClick={() => this.audio?.play()}>
-                Play DJ Track
-              </Button>
-              <Button className="m-1" onClick={() => this.audio?.pause()}>
-                Pause DJ Track
-              </Button>
-              <Button className="m-1" onClick={() => this.showQueue()}>
-                Queue
-              </Button>
-              <Button
-                className="m-1"
-                onClick={() => this.player?.player?.togglePlay()}
-              >
-                Toggle Music
-              </Button>
-              <Button
-                className="m-1"
-                onClick={() => this.player?.player?.pause()}
-              >
-                Pause Music
-              </Button>
-              <Button
-                className="m-1"
-                onClick={() => this.player?.player?.resume()}
-              >
-                Resume Music
-              </Button>
-              <Button
-                className="m-1"
-                onClick={() => this.player?.player?.previousTrack()}
-              >
-                Prev
-              </Button>
-              <Button
-                className="m-1"
-                onClick={() => this.player?.player?.nextTrack()}
-              >
-                Next
-              </Button>
-            </Container>
+            <Button className="m-1" onClick={() => this.audio?.play()}>
+              Play DJ Track
+            </Button>
+            <Button className="m-1" onClick={() => this.audio?.pause()}>
+              Pause DJ Track
+            </Button>
+            <Button className="m-1" onClick={() => this.showQueue()}>
+              Queue
+            </Button>
+            <Button
+              className="m-1"
+              onClick={() => this.player?.player?.togglePlay()}
+            >
+              Toggle Music
+            </Button>
+            <Button
+              className="m-1"
+              onClick={() => this.player?.player?.pause()}
+            >
+              Pause Music
+            </Button>
+            <Button
+              className="m-1"
+              onClick={() => this.player?.player?.resume()}
+            >
+              Resume Music
+            </Button>
+            <Button
+              className="m-1"
+              onClick={() => this.player?.player?.previousTrack()}
+            >
+              Prev
+            </Button>
+            <Button
+              className="m-1"
+              onClick={() => this.player?.player?.nextTrack()}
+            >
+              Next
+            </Button>
+
             <SpotifyPlayer
               getPlayer={this.getPlayer}
               token={this.props?.accessToken}

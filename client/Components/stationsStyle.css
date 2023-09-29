@@ -76,7 +76,10 @@
 
   .mySwiper2 {
     display: flex;
-    height: 500px;
+    max-height: 450px !important;
+  }
+  .mySwiper2 .swiper-content {
+    max-height: 300px !important;
   }
 
   .myswiper2 .swiper-coverflow {
@@ -88,6 +91,7 @@
     opacity: 0.6;
     transition: transform 0.8s, opacity 0.8s;
     transition-timing-function: ease-out;
+    max-height: 450px;
   }
 
   /* .mySwiper2 .swiper-slide img {

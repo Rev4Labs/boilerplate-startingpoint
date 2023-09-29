@@ -56,24 +56,26 @@ export function Stations(props) {
             className="mySwiper2"
             modules={[EffectCoverflow, Pagination]}
             effect={'coverflow'}
-            autoHeight={true}
+            // autoHeight={true}
             grabCursor={true}
             centeredSlides={true}
-            slidesPerView={4}
+            slidesPerView={'auto'}
             speed={600}
+            // slidesPerView: 'auto'
             coverflowEffect={{
               rotate: 20, //50
               stretch: -10, //-75
-              depth: 300, //300
+              depth: 150, //300
               modifier: 1.5, //1
               slideShadows: true,
             }}
             loop={true}
             loopedSlides={2}
-            pagination={{
-              type: 'bullets',
-              clickable: true,
-            }}
+            // pagination={{
+            //   type: 'bullets',
+            //   clickable: true,
+              
+            // }}
             breakpoints={{
               337: {
                 slidesPerView: 1,
@@ -102,8 +104,8 @@ export function Stations(props) {
                     style={{
                       float: 'left',
                       width: '100%',
-                      // height: '100%',
-                      imageFit: 'cover',
+                      maxHeight: "450px",
+                      objectFit: 'scale-down',
                     }}
                   />
                 </SwiperSlide>
