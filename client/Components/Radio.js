@@ -398,7 +398,7 @@ export class Radio extends Component {
           display: 'flex',
           flexDirection: 'column',
           objectFit: 'contain',
-
+          justifyContent: 'center',
           maxHeight: '100vh',
         }}
       >
@@ -463,7 +463,7 @@ export class Radio extends Component {
           </Routes>
         </Row>
         <Row
-          className={`order-row order-row-3 justify-content-center align-items-center align-items-top ${
+          className={`order-row order-row-3 ${
             this.state.djOnAir ||
             !this.props.currentDj?.djName ||
             !this.props.currentStation?.name
@@ -535,13 +535,8 @@ export class Radio extends Component {
         </Row>
         {/* {(this.state.djOnAir = true)} */}
         {this.state.djOnAir && (
-          <Row
-            className="order-row order-row-4 justify-content-center align-items-center blink"
-            style={{ paddingTop: '10px' }}
-          >
-            <Col>
-              <img src="/live.png" alt="Live" style={{ maxWidth: '100px' }} />
-            </Col>
+          <Row className="order-row order-row-4 blink">
+            <img src="/live.png" alt="Live" style={{ maxWidth: '100px' }} />
           </Row>
         )}
         <Row className="order-row order-row-5 justify-content-center">
