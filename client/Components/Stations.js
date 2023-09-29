@@ -67,7 +67,7 @@ export function Stations(props) {
               stretch: -10, //-75
               depth: 150, //300
               modifier: 1.5, //1
-              slideShadows: true,
+              slideShadows: false,
             }}
             loop={true}
             loopedSlides={2}
